@@ -12,10 +12,11 @@
     <artifactId>service_util</artifactId>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.dg.yygh_parent</groupId>-->
-<!--            <artifactId>common-util</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.dg</groupId>
+            <artifactId>common_util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
