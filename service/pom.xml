@@ -17,11 +17,11 @@
     </modules>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.atguigu.yygh</groupId>-->
-<!--            <artifactId>service-util</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.dg</groupId>
+            <artifactId>service_util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.dg</groupId>
             <artifactId>model</artifactId>

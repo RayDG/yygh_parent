@@ -2,6 +2,7 @@ package com.dg.yygh.hosp.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dg.yygh.model.hosp.HospitalSet;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @Author: DG
