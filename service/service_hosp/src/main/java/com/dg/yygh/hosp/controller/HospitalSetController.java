@@ -61,8 +61,8 @@ public class HospitalSetController {
 
     // 3.条件查询带分页
     @PostMapping("findPageHospSet/{current}/{limit}")
-    public Result findPageHospSet(@PathVariable long current,
-                                  @PathVariable long limit,
+    public Result findPageHospSet(@PathVariable Long current,
+                                  @PathVariable Long limit,
                                   // 接收json数据，required = false即值可为空，请求方式必须为Post
                                   @RequestBody(required = false) HospitalSetQueryVo hospitalSetQueryVo) {
         // 1.创建Page对象，传递当前页，每页记录数
@@ -106,7 +106,7 @@ public class HospitalSetController {
 
     // 5.根据id获取医院设置
     @GetMapping("getHospSet/{id}")
-    public Result getHospSet(@PathVariable long id) {
+    public Result getHospSet(@PathVariable Long id) {
         HospitalSet hospitalSet = hospitalSetService.getById(id);
         return Result.ok(hospitalSet);
     }
@@ -133,7 +133,7 @@ public class HospitalSetController {
 
     // 8.医院设置锁定和解锁
     @PutMapping("lockHospitalSet/{id}/{status}")
-    public Result lockHospitalSet(@PathVariable long id,
+    public Result lockHospitalSet(@PathVariable Long id,
                                   @PathVariable Integer status) {
         // 1.根据id查询医院设置信息
         HospitalSet hospitalSet = hospitalSetService.getById(id);
