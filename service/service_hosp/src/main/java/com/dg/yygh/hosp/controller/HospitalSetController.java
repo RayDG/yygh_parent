@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.dg.yygh.common.exception.YyghException;
 import com.dg.yygh.common.result.Result;
+import com.dg.yygh.common.util.MD5;
 import com.dg.yygh.hosp.service.HospitalSetService;
 import com.dg.yygh.model.hosp.HospitalSet;
 import com.dg.yygh.vo.hosp.HospitalSetQueryVo;
@@ -94,7 +95,7 @@ public class HospitalSetController {
         hospitalSet.setStatus(1);
         // 2.签名密钥
         Random random = new Random();
-        hospitalSet.setSignKey(com.atguigu.yygh.common.util.MD5.encrypt(System.currentTimeMillis() + "" + random.nextInt(1000)));
+        hospitalSet.setSignKey(MD5.encrypt(System.currentTimeMillis() + "" + random.nextInt(1000)));
         // 3.调用service
         boolean save = hospitalSetService.save(hospitalSet);
         if (save) {
