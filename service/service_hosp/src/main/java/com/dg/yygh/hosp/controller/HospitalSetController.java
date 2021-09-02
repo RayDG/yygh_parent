@@ -39,11 +39,6 @@ public class HospitalSetController {
     @ApiOperation(value = "获取分页列表")
     @GetMapping("findAll")
     public Result findAllHospitalSet() {
-        try {
-            int a = 1/0;
-        } catch (Exception e) {
-            throw new YyghException("失败", 201);
-        }
         List<HospitalSet> list = hospitalSetService.list();
         return Result.ok(list);
     }
