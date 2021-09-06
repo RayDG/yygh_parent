@@ -56,6 +56,7 @@ public class HospitalSetController {
     }
 
     // 3.条件查询带分页
+    @ApiOperation(value = "医院设置列表（条件分页查询） ")
     @PostMapping("findPageHospSet/{current}/{limit}")
     public Result findPageHospSet(@PathVariable Long current,
                                   @PathVariable Long limit,
@@ -84,6 +85,7 @@ public class HospitalSetController {
     }
 
     // 4.添加医院设置
+    @ApiOperation(value = "添加医院设置")
     @PostMapping("saveHospitalSet")
     public Result saveHospitalSet(@RequestBody HospitalSet hospitalSet) {
         // 1.设置状态 1:可使用 0:不可使用
@@ -101,6 +103,7 @@ public class HospitalSetController {
     }
 
     // 5.根据id获取医院设置
+    @ApiOperation(value = "根据id获取医院设置")
     @GetMapping("getHospSet/{id}")
     public Result getHospSet(@PathVariable Long id) {
         HospitalSet hospitalSet = hospitalSetService.getById(id);
@@ -108,6 +111,7 @@ public class HospitalSetController {
     }
 
     // 6.修改医院设置
+    @ApiOperation(value = "修改医院设置")
     @PostMapping("updateHospitalSet")
     public Result updateHospitalSet(@RequestBody HospitalSet hospitalSet) {
         // updateById() ---> 将实体类中的id作为查询条件
@@ -120,6 +124,7 @@ public class HospitalSetController {
     }
 
     // 7.批量删除医院设置
+    @ApiOperation(value = "批量删除医院设置")
     @DeleteMapping("batchRemove")
     // 接收参数示例：[2, 3]
     public Result batchRemoveHospitalSet(@RequestBody List<String> idList) {
@@ -128,6 +133,7 @@ public class HospitalSetController {
     }
 
     // 8.医院设置锁定和解锁
+    @ApiOperation(value = "医院设置锁定和解锁")
     @PutMapping("lockHospitalSet/{id}/{status}")
     public Result lockHospitalSet(@PathVariable Long id,
                                   @PathVariable Integer status) {
@@ -141,6 +147,7 @@ public class HospitalSetController {
     }
 
     // 9.发送签名密钥
+    @ApiOperation(value = "发送签名密钥")
     @PutMapping("sendKey/{id}")
     public Result lockHospitalSet(@PathVariable Long id) {
         HospitalSet hospitalSet = hospitalSetService.getById(id);

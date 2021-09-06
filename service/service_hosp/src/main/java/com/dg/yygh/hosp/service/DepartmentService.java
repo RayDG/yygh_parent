@@ -3,8 +3,10 @@ package com.dg.yygh.hosp.service;
 
 import com.dg.yygh.model.hosp.Department;
 import com.dg.yygh.vo.hosp.DepartmentQueryVo;
+import com.dg.yygh.vo.hosp.DepartmentVo;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,4 +23,7 @@ public interface DepartmentService{
 
     // 删除科室接口
     void remove(String hoscode, String depcode);
+
+    // 根据医院编号，查询医院所有科室列表
+    List<DepartmentVo> findDepTree(String hoscode);
 }

@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.xml.ws.Holder;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,9 +43,10 @@ public class HospitalServiceImpl implements HospitalService {
         // 如果存在，进行修改
         if (hospitalExist != null) {
             hospital.setStatus(hospitalExist.getStatus());
-            hospital.setCreateTime(hospital.getCreateTime());
+            hospital.setCreateTime(hospitalExist.getCreateTime());
             hospital.setUpdateTime(new Date());
             hospital.setIsDeleted(0);
+            hospital.setId(hospitalExist.getId());
             hospitalRepository.save(hospital);
         } else { // 如果不存在，进行添加
             hospital.setStatus(0);
@@ -83,6 +86,38 @@ public class HospitalServiceImpl implements HospitalService {
         });
 
         return pages;
+    }
+
+    // 更新医院上线状态
+    @Override
+    public void updateStatus(String id, Integer status) {
+        // 根据id查询
+        Hospital hospital = hospitalRepository.findById(id).get();
+        // 更新值
+        hospital.setStatus(status);
+        hospital.setUpdateTime(new Date());
+        hospitalRepository.save(hospital);
+    }
+
+    // 医院详情信息
+    @Override
+    public Map<String, Object> getHospById(String id) {
+        Map<String, Object> result = new HashMap<>();
+        Hospital hospital = this.setHospitalHosType(hospitalRepository.findById(id).get());
+        // 医院基本信息（包含医院等级）
+        result.put("hospital", hospital);
+        result.put("bookingRule", hospital.getBookingRule());
+        return result;
+    }
+
+    // 获取医院名称
+    @Override
+    public String getHospName(String hoscode) {
+        Hospital hospital = hospitalRepository.getHospitalByHoscode(hoscode);
+        if (hospital != null) {
+            return hospital.getHosname();
+        }
+        return null;
     }
 
     // 获取查询对象集合，遍历进行医院等级封装
