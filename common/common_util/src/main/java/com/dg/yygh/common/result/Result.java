@@ -43,7 +43,7 @@ public class Result<T> {
         return result;
     }
 
-    public static<T> Result<T> ok(){
+    public static <T> Result<T> ok(){
         return Result.ok(null);
     }
 
@@ -53,13 +53,13 @@ public class Result<T> {
      * @param <T>
      * @return
      */
-    public static<T> Result<T> ok(T data){
+    public static <T> Result<T> ok(T data){
 //        Result<T> result = build(data);
 //        return build(data, ResultCodeEnum.SUCCESS);
         return build(data, ResultCodeEnum.SUCCESS);
     }
 
-    public static<T> Result<T> fail(){
+    public static <T> Result<T> fail(){
         return Result.fail(null);
     }
 
@@ -69,8 +69,8 @@ public class Result<T> {
      * @param <T>
      * @return
      */
-    public static<T> Result<T> fail(T data){
-        Result<T> result = build(data);
+    public static <T> Result<T> fail(T data){
+//        Result<T> result = build(data);
         return build(data, ResultCodeEnum.FAIL);
     }
 

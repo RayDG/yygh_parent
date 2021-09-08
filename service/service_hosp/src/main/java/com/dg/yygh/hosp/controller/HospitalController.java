@@ -5,6 +5,7 @@ import com.dg.yygh.hosp.service.HospitalService;
 import com.dg.yygh.model.hosp.Hospital;
 import com.dg.yygh.vo.hosp.HospitalQueryVo;
 import com.dg.yygh.vo.hosp.HospitalSetQueryVo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,9 +18,9 @@ import java.util.Map;
  * @Date: 2021/9/2 10:53
  * @Description:
  */
+@Api(tags = "医院信息管理")
 @RestController
 @RequestMapping("/admin/hosp/hospital")
-@CrossOrigin
 public class HospitalController {
     @Autowired
     private HospitalService hospitalService;

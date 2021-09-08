@@ -16,9 +16,9 @@ import java.util.Map;
  * @Date: 2021/9/4 16:55
  * @Description:
  */
+@Api(tags = "医院排班管理")
 @RestController
 @RequestMapping("/admin/hosp/department")
-@CrossOrigin
 public class ScheduleController {
 
     @Autowired
