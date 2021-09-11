@@ -16,6 +16,7 @@ import com.dg.yygh.model.hosp.Schedule;
 import com.dg.yygh.vo.hosp.DepartmentQueryVo;
 import com.dg.yygh.vo.hosp.DepartmentVo;
 import com.dg.yygh.vo.hosp.ScheduleQueryVo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
@@ -35,6 +36,7 @@ import java.util.Scanner;
  */
 @RestController
 @RequestMapping("/api/hosp")
+@Api(tags = "医院开放接口")
 public class ApiController {
 
     @Autowired
