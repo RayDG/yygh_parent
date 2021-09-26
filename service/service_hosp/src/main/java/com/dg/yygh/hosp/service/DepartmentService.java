@@ -29,4 +29,7 @@ public interface DepartmentService{
 
     // 根据医院编号科室编号，查询科室名称
     String getDepName(String hoscode, String depcode);
+
+    // 根据医院编号科室编号，查询科室
+    Department getDepartment(String hoscode, String depcode);
 }
