@@ -6,5 +6,6 @@ package com.dg.yygh.msm.service;
  * @Description:
  */
 public interface MsmService {
+    // 发送短信验证码
     boolean send(String phone, String code);
 }

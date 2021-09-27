@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @Date: 2021/9/2 14:40
  * @Description:
  */
-@FeignClient("service-cmn")
+@FeignClient(name = "service-cmn")
 @Repository
 public interface DictFeignClient {
     // 根据 dictcode 和 value 查询 dictName

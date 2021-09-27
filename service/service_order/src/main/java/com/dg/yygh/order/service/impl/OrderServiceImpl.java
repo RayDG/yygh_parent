@@ -1,0 +1,241 @@
+package com.dg.yygh.order.service.impl;
+
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dg.common.rabbit.constant.MqConst;
+import com.dg.common.rabbit.service.RabbitService;
+import com.dg.yygh.common.exception.YyghException;
+import com.dg.yygh.common.helper.HttpRequestHelper;
+import com.dg.yygh.common.result.ResultCodeEnum;
+import com.dg.yygh.enums.OrderStatusEnum;
+import com.dg.yygh.hosp.client.HospitalFeignClient;
+import com.dg.yygh.model.order.OrderInfo;
+import com.dg.yygh.model.user.Patient;
+import com.dg.yygh.model.user.UserInfo;
+import com.dg.yygh.order.mapper.OrderMapper;
+import com.dg.yygh.order.service.OrderService;
+import com.dg.yygh.user.client.PatientFeignClient;
+import com.dg.yygh.vo.hosp.ScheduleOrderVo;
+import com.dg.yygh.vo.msm.MsmVo;
+import com.dg.yygh.vo.order.OrderMqVo;
+import com.dg.yygh.vo.order.OrderQueryVo;
+import com.dg.yygh.vo.order.SignInfoVo;
+import org.joda.time.DateTime;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+/**
+ * @Author: DG
+ * @Date: 2021/9/26 17:26
+ * @Description:
+ */
+@Service
+public class OrderServiceImpl extends
+        ServiceImpl<OrderMapper, OrderInfo> implements OrderService {
+
+    @Autowired
+    private PatientFeignClient patientFeignClient;
+
+    @Autowired
+    private HospitalFeignClient hospitalFeignClient;
+
+    @Autowired
+    private RabbitService rabbitService;
+
+
+    // 生成挂号订单
+    @Override
+    public Long saveOrder(String scheduleId, Long patientId) {
+        // 获取就诊人信息
+        Patient patient = patientFeignClient.getPatientOrder(patientId);
+
+        // 获取排班相关信息
+        ScheduleOrderVo scheduleOrderVo = hospitalFeignClient.getScheduleOrderVo(scheduleId);
+
+        // 判断当前时间是否还可以预约
+        if(new DateTime(scheduleOrderVo.getStartTime()).isAfterNow()
+                || new DateTime(scheduleOrderVo.getEndTime()).isBeforeNow()) {
+            throw new YyghException(ResultCodeEnum.TIME_NO);
+        }
+
+        // 获取签名信息
+        SignInfoVo signInfoVo = hospitalFeignClient.getSignInfoVo(scheduleOrderVo.getHoscode());
+
+        // 添加到订单表
+        OrderInfo orderInfo = new OrderInfo();
+        // scheduleOrderVo 数据复制到 orderInfo
+        BeanUtils.copyProperties(scheduleOrderVo, orderInfo);
+
+        String outTradeNo = System.currentTimeMillis() + ""+ new Random().nextInt(100);
+        orderInfo.setOutTradeNo(outTradeNo);
+        orderInfo.setScheduleId(scheduleId);
+        orderInfo.setUserId(patient.getUserId());
+        orderInfo.setPatientId(patientId);
+        orderInfo.setPatientName(patient.getName());
+        orderInfo.setPatientPhone(patient.getPhone());
+        orderInfo.setOrderStatus(OrderStatusEnum.UNPAID.getStatus());
+        baseMapper.insert(orderInfo);
+
+        // 调用医院接口，实现预约挂号操作
+        // 设置调用医院接口需要参数，参数放到 map 集合
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("hoscode",orderInfo.getHoscode());
+        paramMap.put("depcode",orderInfo.getDepcode());
+        paramMap.put("hosScheduleId",orderInfo.getScheduleId());
+        paramMap.put("reserveDate",new DateTime(orderInfo.getReserveDate()).toString("yyyy-MM-dd"));
+        paramMap.put("reserveTime", orderInfo.getReserveTime());
+        paramMap.put("amount",orderInfo.getAmount());
+        paramMap.put("name", patient.getName());
+        paramMap.put("certificatesType",patient.getCertificatesType());
+        paramMap.put("certificatesNo", patient.getCertificatesNo());
+        paramMap.put("sex",patient.getSex());
+        paramMap.put("birthdate", patient.getBirthdate());
+        paramMap.put("phone",patient.getPhone());
+        paramMap.put("isMarry", patient.getIsMarry());
+        paramMap.put("provinceCode",patient.getProvinceCode());
+        paramMap.put("cityCode", patient.getCityCode());
+        paramMap.put("districtCode",patient.getDistrictCode());
+        paramMap.put("address",patient.getAddress());
+        //联系人
+        paramMap.put("contactsName",patient.getContactsName());
+        paramMap.put("contactsCertificatesType", patient.getContactsCertificatesType());
+        paramMap.put("contactsCertificatesNo",patient.getContactsCertificatesNo());
+        paramMap.put("contactsPhone",patient.getContactsPhone());
+        paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
+        String sign = HttpRequestHelper.getSign(paramMap, signInfoVo.getSignKey());
+        paramMap.put("sign", sign);
+
+        // 请求医院系统接口
+        JSONObject result = HttpRequestHelper.sendRequest(paramMap, signInfoVo.getApiUrl() + "/order/submitOrder");
+
+        if (result.getInteger("code") == 200) {
+            JSONObject jsonObject = result.getJSONObject("data");
+            //预约记录唯一标识（医院预约记录主键）
+            String hosRecordId = jsonObject.getString("hosRecordId");
+            //预约序号
+            Integer number = jsonObject.getInteger("number");;
+            //取号时间
+            String fetchTime = jsonObject.getString("fetchTime");;
+            //取号地址
+            String fetchAddress = jsonObject.getString("fetchAddress");;
+            //更新订单
+            orderInfo.setHosRecordId(hosRecordId);
+            orderInfo.setNumber(number);
+            orderInfo.setFetchTime(fetchTime);
+            orderInfo.setFetchAddress(fetchAddress);
+            baseMapper.updateById(orderInfo);
+            //排班可预约数
+            Integer reservedNumber = jsonObject.getInteger("reservedNumber");
+            //排班剩余预约数
+            Integer availableNumber = jsonObject.getInteger("availableNumber");
+            // 发送 mq 消息，号源更新和短信通知
+            // 发送 mq 号源更新
+            OrderMqVo orderMqVo = new OrderMqVo();
+            orderMqVo.setScheduleId(scheduleId);
+            orderMqVo.setReservedNumber(reservedNumber);
+            orderMqVo.setAvailableNumber(availableNumber);
+            // 短信提示
+            MsmVo msmVo = new MsmVo();
+            msmVo.setPhone(orderInfo.getPatientPhone());
+            msmVo.setTemplateCode("SMS_194640721");
+            String reserveDate =
+                    new DateTime(orderInfo.getReserveDate()).toString("yyyy-MM-dd")
+                            + (orderInfo.getReserveTime()==0 ? "上午": "下午");
+            Map<String,Object> param = new HashMap<String,Object>(){{
+                put("title", orderInfo.getHosname()+"|"+orderInfo.getDepname()+"|"+orderInfo.getTitle());
+                put("amount", orderInfo.getAmount());
+                put("reserveDate", reserveDate);
+                put("name", orderInfo.getPatientName());
+                put("quitTime", new DateTime(orderInfo.getQuitTime()).toString("yyyy-MM-dd HH:mm"));
+            }};
+            msmVo.setParam(param);
+
+            orderMqVo.setMsmVo(msmVo);
+            rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_ORDER, MqConst.ROUTING_ORDER, orderMqVo);
+
+
+        } else {
+            throw new YyghException(result.getString("message"), ResultCodeEnum.FAIL.getCode());
+        }
+
+        return orderInfo.getId();
+    }
+
+    // 根据订单id查询订单详情
+    @Override
+    public OrderInfo getOrder(String orderId) {
+        OrderInfo orderInfo = baseMapper.selectById(orderId);
+        return this.packOrderInfo(orderInfo);
+    }
+
+    private OrderInfo packOrderInfo(OrderInfo orderInfo) {
+        orderInfo.getParam().put("orderStatusString", OrderStatusEnum.getStatusNameByStatus(orderInfo.getOrderStatus()));
+        return orderInfo;
+    }
+
+    // 订单列表（条件查询带分页）
+    @Override
+    public IPage<OrderInfo> selectPage(Page<OrderInfo> pageParam, OrderQueryVo orderQueryVo) {
+        // orderQueryVo获取条件值
+        String name = orderQueryVo.getKeyword(); // 医院名称
+        String patientName = orderQueryVo.getPatientName(); // 就诊人名称
+        Long patientId = orderQueryVo.getPatientId(); // 就诊人id
+        String orderStatus = orderQueryVo.getOrderStatus(); // 订单名称
+        String reserveDate = orderQueryVo.getReserveDate(); // 安排时间
+        String createTimeBegin = orderQueryVo.getCreateTimeBegin(); // 开始日期
+        String createTimeEnd = orderQueryVo.getCreateTimeEnd(); // 截止日期
+
+        LambdaQueryWrapper<OrderInfo> wrapper = new LambdaQueryWrapper();
+        if (!StringUtils.isEmpty(name)) {
+            wrapper.like(OrderInfo::getHosname, name);
+        }
+        if (!StringUtils.isEmpty(patientName)) {
+            wrapper.like(OrderInfo::getPatientName, patientName);
+        }
+        if (!StringUtils.isEmpty(patientId)) {
+            wrapper.eq(OrderInfo::getPatientId, patientId);
+        }
+        if (!StringUtils.isEmpty(orderStatus)) {
+            wrapper.eq(OrderInfo::getOrderStatus, orderStatus);
+        }
+        if (!StringUtils.isEmpty(reserveDate)) {
+            wrapper.ge(OrderInfo::getReserveDate, reserveDate);
+        }
+        if (!StringUtils.isEmpty(createTimeBegin)) {
+            wrapper.ge(OrderInfo::getCreateTime, createTimeBegin);
+        }
+        if (!StringUtils.isEmpty(createTimeEnd)) {
+            wrapper.le(OrderInfo::getCreateTime, createTimeEnd);
+        }
+
+        // 调用mapper的方法
+        Page<OrderInfo> pages = baseMapper.selectPage(pageParam, wrapper);
+        // 编号变成对应值
+        pages.getRecords().stream().forEach(item -> {
+            this.packOrderInfo(item);
+        });
+        return pages;
+    }
+
+    // 获取订单详情
+    @Override
+    public Map<String, Object> show(Long orderId) {
+        Map<String, Object> map = new HashMap<>();
+        OrderInfo orderInfo = this.packOrderInfo(this.getById(orderId));
+        map.put("orderInfo", orderInfo);
+        Patient patient
+                =  patientFeignClient.getPatientOrder(orderInfo.getPatientId());
+        map.put("patient", patient);
+        return map;
+    }
+
+}

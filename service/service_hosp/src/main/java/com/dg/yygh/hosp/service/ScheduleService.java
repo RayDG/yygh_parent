@@ -1,6 +1,7 @@
 package com.dg.yygh.hosp.service;
 
 import com.dg.yygh.model.hosp.Schedule;
+import com.dg.yygh.vo.hosp.ScheduleOrderVo;
 import com.dg.yygh.vo.hosp.ScheduleQueryVo;
 import org.springframework.data.domain.Page;
 
@@ -30,4 +31,13 @@ public interface ScheduleService {
 
     // 获取可预约排班数据
     Map<String, Object> getBookingScheduleRule(Integer page, Integer limit, String hoscode, String depcode);
+
+    // 根据排班id获取排班数据
+    Schedule getScheduleId(String scheduleId);
+
+    // 根据排班id获取预约下单数据
+    ScheduleOrderVo getScheduleOrderVo(String scheduleId);
+
+    // 更新排班数据
+    void update(Schedule schedule);
 }
