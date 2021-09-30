@@ -100,7 +100,7 @@ public class HospitalServiceImpl implements HospitalService {
             //预约号序
             resultMap.put("number", number);
             //取号时间
-            resultMap.put("fetchTime", reserveDate + "09:00前");;
+            resultMap.put("fetchTime", reserveDate + " 09:00前");;
             //取号地址
             resultMap.put("fetchAddress", "一层114窗口");;
             //排班可预约数

@@ -16,7 +16,7 @@ import java.util.List;
  * @Description: 就诊人管理接口
  */
 @RestController
-@RequestMapping("api/user/patient")
+@RequestMapping("/api/user/patient")
 public class PatientApiController {
 
     @Autowired

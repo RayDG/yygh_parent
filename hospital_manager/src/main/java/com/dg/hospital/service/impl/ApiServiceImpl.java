@@ -69,10 +69,10 @@ public class ApiServiceImpl implements ApiService {
         paramMap.put("hoscode",this.getHoscode());
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
         paramMap.put("sign", MD5.encrypt(this.getSignKey()));
-        JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/hospital/show");
-        System.out.println(respone.toJSONString());
-        if(null != respone && 200 == respone.getIntValue("code")) {
-            JSONObject jsonObject = respone.getJSONObject("data");
+        JSONObject response = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/hospital/show");
+        System.out.println(response.toJSONString());
+        if(response != null && 200 == response.getIntValue("code")) {
+            JSONObject jsonObject = response.getJSONObject("data");
             return jsonObject;
         }
         return null;
@@ -101,13 +101,13 @@ public class ApiServiceImpl implements ApiService {
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
         paramMap.put("sign", MD5.encrypt(this.getSignKey()));
 
-        JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/saveHospital");
-        System.out.println(respone.toJSONString());
+        JSONObject response = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/saveHospital");
+        System.out.println(response.toJSONString());
 
-        if(null != respone && 200 == respone.getIntValue("code")) {
+        if(response != null && 200 == response.getIntValue("code")) {
             return true;
         } else {
-            throw new YyghException(respone.getString("message"), 201);
+            throw new YyghException(response.getString("message"), 201);
         }
     }
 
@@ -122,15 +122,15 @@ public class ApiServiceImpl implements ApiService {
         paramMap.put("limit",pageSize);
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
         paramMap.put("sign", MD5.encrypt(this.getSignKey()));
-        JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/department/list");
-        if(null != respone && 200 == respone.getIntValue("code")) {
-            JSONObject jsonObject = respone.getJSONObject("data");
+        JSONObject response = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/department/list");
+        if(response != null && 200 == response.getIntValue("code")) {
+            JSONObject jsonObject = response.getJSONObject("data");
 
             result.put("total", jsonObject.getLong("totalElements"));
             result.put("pageNum", pageNum);
             result.put("list", jsonObject.getJSONArray("content"));
         } else {
-            throw new YyghException(respone.getString("message"), 201);
+            throw new YyghException(response.getString("message"), 201);
         }
         return result;
     }
@@ -158,11 +158,11 @@ public class ApiServiceImpl implements ApiService {
 
             paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
             paramMap.put("sign",MD5.encrypt(this.getSignKey()));
-            JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/saveDepartment");
-            System.out.println(respone.toJSONString());
+            JSONObject response = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/saveDepartment");
+            System.out.println(response.toJSONString());
 
-            if(null == respone || 200 != respone.getIntValue("code")) {
-                throw new YyghException(respone.getString("message"), 201);
+            if(response == null || 200 != response.getIntValue("code")) {
+                throw new YyghException(response.getString("message"), 201);
             }
         }
         return true;
@@ -175,12 +175,12 @@ public class ApiServiceImpl implements ApiService {
         paramMap.put("depcode",depcode);
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
         paramMap.put("sign", MD5.encrypt(this.getSignKey()));
-        JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/department/remove");
-        System.out.println(respone.toJSONString());
-        if(null != respone && 200 == respone.getIntValue("code")) {
+        JSONObject response = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/department/remove");
+        System.out.println(response.toJSONString());
+        if(response != null && 200 == response.getIntValue("code")) {
             return true;
         } else {
-            throw new YyghException(respone.getString("message"), 201);
+            throw new YyghException(response.getString("message"), 201);
         }
     }
 
@@ -194,16 +194,16 @@ public class ApiServiceImpl implements ApiService {
         paramMap.put("limit",pageSize);
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
         paramMap.put("sign", MD5.encrypt(this.getSignKey()));
-        JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/schedule/list");
-        System.out.println(respone.toJSONString());
-        if(null != respone && 200 == respone.getIntValue("code")) {
-            JSONObject jsonObject = respone.getJSONObject("data");
+        JSONObject response = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/schedule/list");
+        System.out.println(response.toJSONString());
+        if(response != null && 200 == response.getIntValue("code")) {
+            JSONObject jsonObject = response.getJSONObject("data");
 
             result.put("total", jsonObject.getLong("totalElements"));
             result.put("pageNum", pageNum);
             result.put("list", jsonObject.getJSONArray("content"));
         } else {
-            throw new YyghException(respone.getString("message"), 201);
+            throw new YyghException(response.getString("message"), 201);
         }
         return result;
     }
@@ -237,7 +237,7 @@ public class ApiServiceImpl implements ApiService {
             schedule.setStatus(1);
 
             Schedule targetSchedule = scheduleMapper.selectById(id);
-            if(null != targetSchedule) {
+            if(targetSchedule != null) {
                 //值copy不为null的值，该方法为自定义方法
                 BeanUtils.copyBean(schedule, targetSchedule, Schedule.class);
                 scheduleMapper.updateById(targetSchedule);
@@ -261,10 +261,10 @@ public class ApiServiceImpl implements ApiService {
             paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
             paramMap.put("sign", MD5.encrypt(this.getSignKey()));
 
-            JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/saveSchedule");
-            System.out.println(respone.toJSONString());
-            if(null == respone || 200 != respone.getIntValue("code")) {
-                throw new YyghException(respone.getString("message"), 201);
+            JSONObject response = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/saveSchedule");
+            System.out.println(response.toJSONString());
+            if(response == null || 200 != response.getIntValue("code")) {
+                throw new YyghException(response.getString("message"), 201);
             }
         }
         return false;
@@ -277,12 +277,12 @@ public class ApiServiceImpl implements ApiService {
         paramMap.put("hosScheduleId",hosScheduleId);
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
         paramMap.put("sign", MD5.encrypt(this.getSignKey()));
-        JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/schedule/remove");
-        System.out.println(respone.toJSONString());
-        if(null != respone && 200 == respone.getIntValue("code")) {
+        JSONObject response = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/schedule/remove");
+        System.out.println(response.toJSONString());
+        if(response != null && 200 == response.getIntValue("code")) {
             return true;
         } else {
-            throw new YyghException(respone.getString("message"), 201);
+            throw new YyghException(response.getString("message"), 201);
         }
     }
 
@@ -339,10 +339,10 @@ public class ApiServiceImpl implements ApiService {
             paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
             paramMap.put("sign", MD5.encrypt(this.getSignKey()));
 
-            JSONObject respone = HttpRequestHelper.sendRequest(paramMap,"http://localhost/api/hosp/saveHospital");
-            System.out.println(respone.toJSONString());
-            if(null == respone || 200 != respone.getIntValue("code")) {
-                throw new YyghException(respone.getString("message"), 201);
+            JSONObject response = HttpRequestHelper.sendRequest(paramMap,"http://localhost/api/hosp/saveHospital");
+            System.out.println(response.toJSONString());
+            if(response == null || 200 != response.getIntValue("code")) {
+                throw new YyghException(response.getString("message"), 201);
             }
         }
     }

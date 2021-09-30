@@ -8,6 +8,8 @@ import com.dg.yygh.enums.OrderStatusEnum;
 import com.dg.yygh.model.order.OrderInfo;
 import com.dg.yygh.model.user.UserInfo;
 import com.dg.yygh.order.service.OrderService;
+import com.dg.yygh.vo.order.OrderCountQueryVo;
+import com.dg.yygh.vo.order.OrderCountVo;
 import com.dg.yygh.vo.order.OrderQueryVo;
 import com.dg.yygh.vo.user.UserInfoQueryVo;
 import io.swagger.annotations.Api;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
+import java.util.Map;
 
 /**
  * @Author: DG
@@ -66,5 +69,17 @@ public class OrderApiController {
         return Result.ok(OrderStatusEnum.getStatusList());
     }
 
+    // 取消预约
+    @GetMapping("auth/cancelOrder/{orderId}")
+    public Result cancelOrder(@PathVariable Long orderId) {
+        Boolean isCancel = orderService.cancelOrder(orderId);
+        return Result.ok(isCancel);
+    }
+
+    // 获取订单统计数量
+    @PostMapping("inner/getCountMap")
+    public Map<String, Object> getCountMap(@RequestBody OrderCountQueryVo orderCountQueryVo) {
+        return orderService.getCountMap(orderCountQueryVo);
+    }
 
 }

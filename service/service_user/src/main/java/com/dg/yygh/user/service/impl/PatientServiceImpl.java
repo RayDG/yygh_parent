@@ -46,7 +46,7 @@ public class PatientServiceImpl extends
                 patient.getCertificatesType());
         //联系人证件类型
         String contactsCertificatesTypeString =
-                dictFeignClient.getName(DictEnum.CERTIFICATES_TYPE.getDictCode(),patient.getContactsCertificatesType());
+                dictFeignClient.getName(DictEnum.CERTIFICATES_TYPE.getDictCode(), patient.getContactsCertificatesType());
         //省
         String provinceString = dictFeignClient.getName(patient.getProvinceCode());
         //市

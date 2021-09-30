@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Vector;
 
 
 @Component
@@ -31,13 +32,13 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         String path = request.getURI().getPath();
         System.out.println("==="+path);
 
-        //内部服务接口，不允许外部访问
+        // 内部服务接口，不允许外部访问
         if(antPathMatcher.match("/**/inner/**", path)) {
             ServerHttpResponse response = exchange.getResponse();
             return out(response, ResultCodeEnum.PERMISSION);
         }
 
-        //api接口，异步请求，校验用户必须登录
+        // api接口，异步请求，校验用户必须登录
         if(antPathMatcher.match("/api/**/auth/**", path)) {
             Long userId = this.getUserId(request);
             if(StringUtils.isEmpty(userId)) {
