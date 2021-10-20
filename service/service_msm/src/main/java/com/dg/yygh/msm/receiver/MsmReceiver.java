@@ -1,8 +1,7 @@
 package com.dg.yygh.msm.receiver;
 
-import com.dg.common.rabbit.constant.MqConst;
+import com.dg.common.rabbit.constant.MQConst;
 import com.dg.yygh.msm.service.MailService;
-import com.dg.yygh.msm.service.MsmService;
 import com.dg.yygh.vo.msm.MsmVo;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
@@ -23,14 +22,13 @@ public class MsmReceiver {
 
     @Autowired
     private MailService mailService;
+
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = MqConst.QUEUE_MSM_ITEM, durable = "true"),
-            exchange = @Exchange(value = MqConst.EXCHANGE_DIRECT_MSM),
-            key = {MqConst.ROUTING_MSM_ITEM}
+            value = @Queue(value = MQConst.QUEUE_MSM_ITEM, durable = "true"),
+            exchange = @Exchange(value = MQConst.EXCHANGE_DIRECT_MSM),
+            key = {MQConst.ROUTING_MSM_ITEM}
     ))
     public void send(MsmVo msmVo, Message message, Channel channel) {
         mailService.send(msmVo);
     }
-
-
 }

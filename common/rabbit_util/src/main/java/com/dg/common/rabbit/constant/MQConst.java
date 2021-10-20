@@ -5,7 +5,7 @@ package com.dg.common.rabbit.constant;
  * @Date: 2021/9/26 20:37
  * @Description:
  */
-public class MqConst {
+public class MQConst {
 
     // 预约下单
     public static final String EXCHANGE_DIRECT_ORDER

@@ -21,13 +21,6 @@ public class GlobalExceptionHandler {
         return Result.fail();
     }
 
-//    try {
-//        int a = 1/0;
-//    } catch (Exception e) {
-    //自定义异常类，需手动抛出
-//        throw new YyghException("失败", 201);
-//    }
-
     @ExceptionHandler(YyghException.class)
     @ResponseBody
     public Result error(YyghException e) {

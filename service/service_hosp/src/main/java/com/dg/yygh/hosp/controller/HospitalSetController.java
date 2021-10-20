@@ -64,17 +64,14 @@ public class HospitalSetController {
         // 1.创建Page对象，传递当前页，每页记录数
         Page<HospitalSet> page = new Page<>(current, limit);
         // 2.构建条件
-//        QueryWrapper<HospitalSet> wrapper = new QueryWrapper<>();
         LambdaQueryWrapper<HospitalSet> wrapper = new LambdaQueryWrapper<>();
         // 条件空值判断
         String hosname = hospitalSetQueryVo.getHosname();
         String hoscode = hospitalSetQueryVo.getHoscode();
         if (!StringUtils.isEmpty(hosname)) {
-//            wrapper.like("hosname", hosname);
             wrapper.like(HospitalSet::getHosname, hosname);
         }
         if (!StringUtils.isEmpty(hoscode)) {
-//            wrapper.eq("hoscode", hoscode);
             wrapper.eq(HospitalSet::getHoscode, hoscode);
         }
         // 3.调用方法实现分页查询

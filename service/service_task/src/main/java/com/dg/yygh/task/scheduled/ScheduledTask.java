@@ -1,6 +1,6 @@
 package com.dg.yygh.task.scheduled;
 
-import com.dg.common.rabbit.constant.MqConst;
+import com.dg.common.rabbit.constant.MQConst;
 import com.dg.common.rabbit.service.RabbitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -24,6 +24,6 @@ public class ScheduledTask {
     @Scheduled(cron = "0 0 8 * * ?")
 //    @Scheduled(cron = "0/30 * * * * ?")
     public void taskPatient() {
-        rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_TASK, MqConst.ROUTING_TASK_8, "");
+        rabbitService.sendMessage(MQConst.EXCHANGE_DIRECT_TASK, MQConst.ROUTING_TASK_8, "");
     }
 }

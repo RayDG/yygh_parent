@@ -1,6 +1,6 @@
 package com.dg.yygh.order.receiver;
 
-import com.dg.common.rabbit.constant.MqConst;
+import com.dg.common.rabbit.constant.MQConst;
 import com.dg.yygh.order.service.OrderService;
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
@@ -25,9 +25,9 @@ public class OrderReceiver {
     private OrderService orderService;
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = MqConst.QUEUE_TASK_8, durable = "true"),
-            exchange = @Exchange(value = MqConst.EXCHANGE_DIRECT_TASK),
-            key = {MqConst.ROUTING_TASK_8}
+            value = @Queue(value = MQConst.QUEUE_TASK_8, durable = "true"),
+            exchange = @Exchange(value = MQConst.EXCHANGE_DIRECT_TASK),
+            key = {MQConst.ROUTING_TASK_8}
     ))
 
     public void patientTips(Message message, Channel channel) throws IOException {

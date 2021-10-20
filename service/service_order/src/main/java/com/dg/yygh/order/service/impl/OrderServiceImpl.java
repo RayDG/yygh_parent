@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dg.common.rabbit.constant.MqConst;
+import com.dg.common.rabbit.constant.MQConst;
 import com.dg.common.rabbit.service.RabbitService;
 import com.dg.yygh.common.exception.YyghException;
 import com.dg.yygh.common.helper.HttpRequestHelper;
@@ -14,7 +14,6 @@ import com.dg.yygh.enums.OrderStatusEnum;
 import com.dg.yygh.hosp.client.HospitalFeignClient;
 import com.dg.yygh.model.order.OrderInfo;
 import com.dg.yygh.model.user.Patient;
-import com.dg.yygh.model.user.UserInfo;
 import com.dg.yygh.order.mapper.OrderMapper;
 import com.dg.yygh.order.service.OrderService;
 import com.dg.yygh.order.service.WeixinService;
@@ -163,7 +162,7 @@ public class OrderServiceImpl extends
             msmVo.setParam(param);
 
             orderMqVo.setMsmVo(msmVo);
-            rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_ORDER, MqConst.ROUTING_ORDER, orderMqVo);
+            rabbitService.sendMessage(MQConst.EXCHANGE_DIRECT_ORDER, MQConst.ROUTING_ORDER, orderMqVo);
 
         } else {
             throw new YyghException(result.getString("message"), ResultCodeEnum.FAIL.getCode());
@@ -291,7 +290,7 @@ public class OrderServiceImpl extends
                 }};
                 msmVo.setParam(param);
                 orderMqVo.setMsmVo(msmVo);
-                rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_ORDER, MqConst.ROUTING_ORDER, orderMqVo);
+                rabbitService.sendMessage(MQConst.EXCHANGE_DIRECT_ORDER, MQConst.ROUTING_ORDER, orderMqVo);
             }
             return true;
         }
@@ -315,7 +314,7 @@ public class OrderServiceImpl extends
                 put("name", orderInfo.getPatientName());
             }};
             msmVo.setParam(param);
-            rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_MSM, MqConst.ROUTING_MSM_ITEM, msmVo);
+            rabbitService.sendMessage(MQConst.EXCHANGE_DIRECT_MSM, MQConst.ROUTING_MSM_ITEM, msmVo);
         }
     }
 

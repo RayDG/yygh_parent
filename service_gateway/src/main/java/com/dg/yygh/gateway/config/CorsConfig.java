@@ -7,6 +7,9 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.util.pattern.PathPatternParser;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * @Author: DG
  * @Date: 2021/9/7 08:33
@@ -28,4 +31,5 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsWebFilter(source);
     }
+
 }

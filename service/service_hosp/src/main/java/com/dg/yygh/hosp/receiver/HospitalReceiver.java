@@ -1,6 +1,6 @@
 package com.dg.yygh.hosp.receiver;
 
-import com.dg.common.rabbit.constant.MqConst;
+import com.dg.common.rabbit.constant.MQConst;
 import com.dg.common.rabbit.service.RabbitService;
 import com.dg.yygh.hosp.service.ScheduleService;
 import com.dg.yygh.model.hosp.Schedule;
@@ -32,9 +32,9 @@ public class HospitalReceiver {
     private RabbitService rabbitService;
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = MqConst.QUEUE_ORDER, durable = "true"),
-            exchange = @Exchange(value = MqConst.EXCHANGE_DIRECT_ORDER),
-            key = {MqConst.ROUTING_ORDER}
+            value = @Queue(value = MQConst.QUEUE_ORDER, durable = "true"),
+            exchange = @Exchange(value = MQConst.EXCHANGE_DIRECT_ORDER),
+            key = {MQConst.ROUTING_ORDER}
     ))
 
     public void receiver(OrderMqVo orderMqVo, Message message, Channel channel) throws IOException {
@@ -54,7 +54,7 @@ public class HospitalReceiver {
         // 发送短信
         MsmVo msmVo = orderMqVo.getMsmVo();
         if(msmVo != null) {
-            rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_MSM, MqConst.ROUTING_MSM_ITEM, msmVo);
+            rabbitService.sendMessage(MQConst.EXCHANGE_DIRECT_MSM, MQConst.ROUTING_MSM_ITEM, msmVo);
         }
 
     }

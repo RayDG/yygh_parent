@@ -18,8 +18,6 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Vector;
-
 
 @Component
 public class AuthGlobalFilter implements GlobalFilter, Ordered {
