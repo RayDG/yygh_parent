@@ -17,6 +17,7 @@ import com.dg.yygh.vo.hosp.DepartmentQueryVo;
 import com.dg.yygh.vo.hosp.DepartmentVo;
 import com.dg.yygh.vo.hosp.ScheduleQueryVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
@@ -52,6 +53,7 @@ public class ApiController {
     private ScheduleService scheduleService;
 
     // 删除排班
+    @ApiOperation(value = "删除排班")
     @PostMapping("schedule/remove")
     public Result remove(HttpServletRequest request) {
         // 获取传递过来的排班信息
@@ -68,6 +70,7 @@ public class ApiController {
     }
 
     // 查询排班接口
+    @ApiOperation(value = "查询排班列表")
     @PostMapping("schedule/list")
     public Result findSchedule(HttpServletRequest request) {
         // 获取传递过来的排班信息
@@ -96,6 +99,7 @@ public class ApiController {
     }
 
     // 上传排班接口
+    @ApiOperation(value = "上传排班列表")
     @PostMapping("saveSchedule")
     public Result saveSchedule (HttpServletRequest request) {
         // 获取传递过来的排班信息
@@ -108,6 +112,7 @@ public class ApiController {
     }
 
     // 删除科室接口
+    @ApiOperation(value = "删除科室")
     @PostMapping("department/remove")
     public Result removeDepartment(HttpServletRequest request) {
         // 获取传递过来的科室信息
@@ -125,6 +130,7 @@ public class ApiController {
     }
 
     // 查询科室接口
+    @ApiOperation(value = "查询科室列表")
     @PostMapping("department/list")
     public Result findDepartment(HttpServletRequest request) {
         // 获取传递过来科室信息
@@ -148,6 +154,7 @@ public class ApiController {
     }
 
     // 上传科室接口
+    @ApiOperation(value = "上传科室列表")
     @PostMapping("saveDepartment")
     public Result saveDepartment(HttpServletRequest request){
         // 获取传递过来的医院信息
@@ -173,6 +180,7 @@ public class ApiController {
     }
 
     // 查询医院
+    @ApiOperation(value = "查询医院")
     @PostMapping("hospital/show")
     public Result getHospital(HttpServletRequest request) {
         // 获取传递过来的医院信息
@@ -199,6 +207,7 @@ public class ApiController {
     }
 
     // 上传医院接口
+    @ApiOperation(value = "上传医院")
     @PostMapping("saveHospital")
     public Result saveHosp(HttpServletRequest request) {
         // 获取传递过来的医院信息
