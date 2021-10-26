@@ -4,6 +4,8 @@ import com.dg.yygh.common.result.Result;
 import com.dg.yygh.common.util.AuthContextHolder;
 import com.dg.yygh.model.user.Patient;
 import com.dg.yygh.user.service.PatientService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import java.util.List;
  * @Date: 2021/9/23 15:07
  * @Description: 就诊人管理接口
  */
+@Api(value = "就诊人接口")
 @RestController
 @RequestMapping("/api/user/patient")
 public class PatientApiController {
@@ -23,6 +26,7 @@ public class PatientApiController {
     private PatientService patientService;
 
     // 获取就诊人列表
+    @ApiOperation(value = "获取就诊人列表")
     @GetMapping("auth/findAll")
     public Result findAll(HttpServletRequest request) {
         Long userId = AuthContextHolder.getUserId(request);
@@ -31,6 +35,7 @@ public class PatientApiController {
     }
 
     // 添加就诊人
+    @ApiOperation(value = "添加就诊人")
     @PostMapping("auth/save")
     public Result savePatient(@RequestBody Patient patient, HttpServletRequest request) {
         // 获取当前登录用户id
