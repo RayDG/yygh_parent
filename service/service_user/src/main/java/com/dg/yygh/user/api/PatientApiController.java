@@ -46,6 +46,7 @@ public class PatientApiController {
     }
 
     // 根据id获取就诊人信息
+    @ApiOperation(value = "根据id获取就诊人信息")
     @GetMapping("auth/get/{id}")
     public Result getPatient(@PathVariable Long id) {
         Patient patient = patientService.getPatientById(id);
@@ -53,6 +54,7 @@ public class PatientApiController {
     }
 
     // 修改就诊人
+    @ApiOperation(value = "修改就诊人")
     @PostMapping("auth/update")
     public Result savePatient(@RequestBody Patient patient) {
         patientService.updateById(patient);
@@ -60,6 +62,7 @@ public class PatientApiController {
     }
 
     // 删除就诊人
+    @ApiOperation(value = "删除就诊人")
     @DeleteMapping("auth/remove/{id}")
     public Result savePatient(@PathVariable Long id) {
         patientService.removeById(id);
