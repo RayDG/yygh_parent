@@ -6,6 +6,7 @@ import com.dg.yygh.common.result.Result;
 import com.dg.yygh.model.user.UserInfo;
 import com.dg.yygh.user.service.UserInfoService;
 import com.dg.yygh.vo.user.UserInfoQueryVo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import java.util.Map;
  * @Date: 2021/9/23 17:03
  * @Description:
  */
+@Api(value = "用户管理接口")
 @RestController
 @RequestMapping("/admin/user")
 public class UserController {
