@@ -9,6 +9,8 @@ import com.dg.yygh.model.user.UserInfo;
 import com.dg.yygh.user.service.UserInfoService;
 import com.dg.yygh.user.util.ConstantWxPropertiesUtil;
 import com.dg.yygh.user.util.HttpClientUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -27,6 +29,7 @@ import java.util.Map;
  * @Date: 2021/9/22 09:57
  * @Description:
  */
+@Api(value = "微信登录接口")
 @Controller
 @RequestMapping("/api/ucenter/wx")
 public class WeixinApiController {
@@ -37,6 +40,7 @@ public class WeixinApiController {
     /**
      * 获取微信登录参数
      */
+    @ApiOperation(value = "获取微信登录参数")
     @GetMapping("getLoginParam")
     @ResponseBody
     public Result genQrConnect(HttpSession session) throws UnsupportedEncodingException {
