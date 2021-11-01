@@ -36,6 +36,7 @@ public class UserInfoApiController {
     }
 
     // 用户认证接口
+    @ApiOperation(value = "用户认证")
     @PostMapping("auth/userAuth")
     public Result userAuth(@RequestBody UserAuthVo userAuthVo, HttpServletRequest request) {
         // 传递两个参数，第一个参数用户id，第二个参数认证数据vo对象
