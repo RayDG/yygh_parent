@@ -7,6 +7,7 @@ import com.dg.yygh.model.user.UserInfo;
 import com.dg.yygh.user.service.UserInfoService;
 import com.dg.yygh.vo.user.UserInfoQueryVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class UserController {
     private UserInfoService userInfoService;
 
     // 用户列表（条件查询带分页）
+    @ApiOperation(value = "用户列表（条件查询带分页）")
     @GetMapping("{page}/{limit}")
     public Result list(@PathVariable Long page,
                        @PathVariable Long limit,
