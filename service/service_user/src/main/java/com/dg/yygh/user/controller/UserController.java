@@ -58,6 +58,7 @@ public class UserController {
     }
 
     // 认证审批
+    @ApiOperation(value = "认证审批")
     @GetMapping("approval/{userId}/{authStatus}")
     public Result approval(@PathVariable Long userId, @PathVariable Integer authStatus) {
         userInfoService.approval(userId, authStatus);
