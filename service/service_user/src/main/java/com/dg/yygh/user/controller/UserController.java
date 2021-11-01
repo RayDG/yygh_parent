@@ -50,6 +50,7 @@ public class UserController {
     }
 
     // 用户详情
+    @ApiOperation(value = "用户详情")
     @GetMapping("show/{userId}")
     public Result show(@PathVariable Long userId) {
         Map<String, Object> map = userInfoService.show(userId);
