@@ -6,6 +6,7 @@ import com.dg.yygh.model.user.UserInfo;
 import com.dg.yygh.user.service.UserInfoService;
 import com.dg.yygh.vo.user.LoginVo;
 import com.dg.yygh.vo.user.UserAuthVo;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.Map;
  * @Date: 2021/9/19 20:48
  * @Description:
  */
+@Api(value = "用户登录接口")
 @RestController
 @RequestMapping("/api/user")
 public class UserInfoApiController {
