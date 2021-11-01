@@ -42,6 +42,7 @@ public class UserController {
     }
 
     // 用户锁定
+    @ApiOperation(value = "用户锁定")
     @GetMapping("lock/{userId}/{status}")
     public Result lock(@PathVariable Long userId, @PathVariable Integer status) {
         userInfoService.lock(userId, status);
