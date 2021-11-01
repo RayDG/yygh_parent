@@ -7,6 +7,7 @@ import com.dg.yygh.user.service.UserInfoService;
 import com.dg.yygh.vo.user.LoginVo;
 import com.dg.yygh.vo.user.UserAuthVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class UserInfoApiController {
     private UserInfoService userInfoService;
 
     // 用户手机号登录接口
+    @ApiOperation(value = "用户手机号登录")
     @PostMapping("login")
     public Result login(@RequestBody LoginVo loginVo) {
         Map<String, Object> info = userInfoService.loginUser(loginVo);
