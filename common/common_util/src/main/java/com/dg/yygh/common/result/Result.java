@@ -24,8 +24,9 @@ public class Result<T> {
 
     protected static <T> Result<T> build(T data) {
         Result<T> result = new Result<T>();
-        if (data != null)
+        if (data != null) {
             result.setData(data);
+        }
         return result;
     }
 
@@ -54,8 +55,6 @@ public class Result<T> {
      * @return
      */
     public static <T> Result<T> ok(T data){
-//        Result<T> result = build(data);
-//        return build(data, ResultCodeEnum.SUCCESS);
         return build(data, ResultCodeEnum.SUCCESS);
     }
 

@@ -58,7 +58,7 @@ public class WeixinApiController {
         return null;
     }
 
-    //微信扫描后回调的方法
+    //微信登录后回调的方法
     @GetMapping("callback")
     public String callback(String code,String state) {
         //第一步 获取临时票据 code
