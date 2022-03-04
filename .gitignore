@@ -45,6 +45,9 @@ build/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Properties
+*.properties
+
 # Package Files #
 *.jar
 *.war
