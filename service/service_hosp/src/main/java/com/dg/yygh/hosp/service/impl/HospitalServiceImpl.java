@@ -144,6 +144,7 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public Map<String, Object> item(String hoscode) {
         Map<String, Object> result = new HashMap<>();
+        // TODO 添加缓存
         //医院详情
         Hospital hospital = this.setHospitalHosType(this.getByHoscode(hoscode));
         result.put("hospital", hospital);

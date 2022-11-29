@@ -42,9 +42,7 @@ public class RandomUtil {
 
         // 生成随机数字并存入HashMap
         for (int i = 0; i < list.size(); i++) {
-
             int number = random.nextInt(100) + 1;
-
             hashMap.put(number, i);
         }
 

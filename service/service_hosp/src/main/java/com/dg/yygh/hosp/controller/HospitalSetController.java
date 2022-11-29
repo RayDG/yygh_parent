@@ -86,7 +86,7 @@ public class HospitalSetController {
     public Result saveHospitalSet(@RequestBody HospitalSet hospitalSet) {
         // 1.设置状态 1:可使用 0:不可使用
         hospitalSet.setStatus(1);
-        // 2.签名密钥
+        // 2.设置签名密钥
         Random random = new Random();
         hospitalSet.setSignKey(MD5.encrypt(System.currentTimeMillis() + "" + random.nextInt(1000)));
         // 3.调用service

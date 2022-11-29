@@ -76,9 +76,12 @@ public class OrderServiceImpl extends
         BeanUtils.copyProperties(scheduleOrderVo, orderInfo);
 
         String outTradeNo = System.currentTimeMillis() + "" + new Random().nextInt(100);
+        // 填充订单信息
+        // 1.设置订单交易号、排班id、用户id
         orderInfo.setOutTradeNo(outTradeNo);
         orderInfo.setScheduleId(scheduleId);
         orderInfo.setUserId(patient.getUserId());
+        // 2.添加就诊人信息
         orderInfo.setPatientId(patientId);
         orderInfo.setPatientName(patient.getName());
         orderInfo.setPatientPhone(patient.getPhone());
@@ -123,13 +126,13 @@ public class OrderServiceImpl extends
             String hosRecordId = jsonObject.getString("hosRecordId");
             //预约序号
             Integer number = jsonObject.getInteger("number");
-            ;
+
             //取号时间
             String fetchTime = jsonObject.getString("fetchTime");
-            ;
+
             //取号地址
             String fetchAddress = jsonObject.getString("fetchAddress");
-            ;
+
             //更新订单
             orderInfo.setHosRecordId(hosRecordId);
             orderInfo.setNumber(number);

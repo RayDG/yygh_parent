@@ -175,6 +175,7 @@ public class UserInfoServiceImpl extends
         pages.getRecords().stream().forEach(item -> {
             this.packageUserInfo(item);
         });
+
         return pages;
     }
 

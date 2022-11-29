@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @Author: DG
  * @Date: 2021/8/29 15:36
- * @Description:
+ * @Description: 全局异常处理类
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -25,6 +25,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result error(YyghException e) {
         e.printStackTrace();
-        return Result.fail();
+        return Result.build(e.getCode(), e.getMessage());
     }
 }
