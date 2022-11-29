@@ -57,6 +57,9 @@ build/
 *.tar.gz
 *.rar
 
+service/service_msm/src/main/java/com/dg/yygh/msm/service/impl/MailServiceImpl.java
+service/service_msm/src/main/java/com/dg/yygh/msm/service/impl/MsmServiceImpl.java
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 >>>>>>> bbef6d6129ff4901d06de7c4b027bfa8767a9fa4

@@ -6,11 +6,11 @@
 
 ## 系统架构图
 
-![尚医通架构图](https://cdn.jsdelivr.net/gh/RayDG/dgImg/img/202203042046978.png)
+![平台架构图](https://cdn.jsdelivr.net/gh/RayDG/dgImg/img/202211291806863.png)
 
 ## 业务流程图
 
-![尚医通业务流程](https://cdn.jsdelivr.net/gh/RayDG/dgImg/img/202203042132451.png)
+![业务流程图](https://cdn.jsdelivr.net/gh/RayDG/dgImg/img/202211291806912.png)
 
 ## 组织结构
 
@@ -21,11 +21,11 @@ yygh-parent
 ├── yygh-parent-service -- 业务模块
 	├── service-user -- 用户模块
 	├── service-cmn -- 数据字典模块
-	├── service-hosp -- 数据字典模块
+	├── service-hosp -- 医院模块
 	├── service-msm -- 短信/邮件模块
 	├── service-order -- 订单模块
 	├── service-oss -- 对象存储模块
-	├── service-user -- 对象存储模块
+	├── service-task -- 定时任务模块
 	├── service-statistics -- 统计图表模块
 ├── yygh-parent-service-client -- 远程调用模块
 ├── yygh-parent-gateway -- 基于Spring Cloud Gateway的微服务API网关服务

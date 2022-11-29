@@ -48,9 +48,10 @@ public class MsmApiController {
         // 生成验证码
         code = RandomUtil.getSixBitRandom();
         System.out.println("验证码" + code);
-        // TODO 发送手机验证码
+
         // 发送到邮箱
 //        boolean isSend = mailService.send(phone, code);
+        // 发送手机短信验证码
         boolean isSend = msmService.send(phone, code);
         // 验证码放入redis中，设置有效时间
         if (isSend) {

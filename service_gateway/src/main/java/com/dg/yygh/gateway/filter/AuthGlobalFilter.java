@@ -8,6 +8,8 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -62,7 +64,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         byte[] bits = JSONObject.toJSONString(result).getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = response.bufferFactory().wrap(bits);
         //指定编码，否则在浏览器中会中文乱码
-        response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+        response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
         return response.writeWith(Mono.just(buffer));
     }
 
@@ -74,7 +76,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
     private Long getUserId(ServerHttpRequest request) {
         String token = "";
         List<String> tokenList = request.getHeaders().get("token");
-        if(null  != tokenList) {
+        if(null != tokenList) {
             token = tokenList.get(0);
         }
         if(!StringUtils.isEmpty(token)) {

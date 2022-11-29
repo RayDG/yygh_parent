@@ -137,6 +137,10 @@
             </plugin>
         </plugins>
 
+        <!--
+            资源插件
+            告诉maven把 src/main/java目录中的 指定扩展名的文件 拷贝到 target/classes目录中。
+        -->
         <!-- 项目打包时会将java目录中的*.xml文件也进行打包 -->
         <resources>
             <resource>
